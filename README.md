@@ -35,6 +35,7 @@ The frontend is a React single-page application (SPA) that provides the user int
 ## video 2
 <video src="https://github.com/mee-nam-lee/vertex-ai-search-web-ui/raw/main/vais_ui.mp4" controls width="720"></video> 
 
+## video 3
 [![Vertex AI Seaarch](vais_ui.png)](https://www.youtube.com/watch?v=HuE6XZsNKww&t=65s)
 
 
