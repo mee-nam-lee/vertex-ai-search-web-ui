@@ -29,7 +29,7 @@ The frontend is a React single-page application (SPA) that provides the user int
 -   Handling citations and document previews.
 
 
-<video src="https://raw.githubusercontent.com/mee-nam-lee/vertex-ai-search-web-ui/refs/heads/main/vais_ui.mp4" controls width="720"></video>
+<video src="https://raw.githubusercontent.com/mee-nam-lee/vertex-ai-search-web-ui/refs/heads/main/vais_ui.mp4" controls width="720"></video> 
 
 It communicates with the backend API to fetch search results and answers.
 
