@@ -33,7 +33,7 @@ The frontend is a React single-page application (SPA) that provides the user int
 
 
 ## video 2
-<video src="https://github.com/mee-nam-lee/vertex-ai-search-web-ui/raw/refs/heads/main/vais_ui.mp4" controls width="720"></video> 
+<video src="https://github.com/mee-nam-lee/vertex-ai-search-web-ui/raw/main/vais_ui.mp4" controls width="720"></video> 
 
 
 It communicates with the backend API to fetch search results and answers.
