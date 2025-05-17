@@ -1,4 +1,4 @@
-# Search Application
+# Vertex AI Search Application (Similar to Vertex AI Search Widget)
 
 This project consists of a frontend React application and a backend Python Flask application that work together to provide a search interface.
 
