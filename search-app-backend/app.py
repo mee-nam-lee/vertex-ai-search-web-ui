@@ -170,7 +170,7 @@ def search(): # Renamed from search_documents
         
         request_body = {
             "query": query_text,
-            "pageSize": 3,
+            "pageSize": 10,
             "queryExpansionSpec": {
                 "condition": "AUTO"
             },

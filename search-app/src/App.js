@@ -192,7 +192,7 @@ const SearchBar = ({ initialValue, onSearch, onClear }) => {
   const handleClear = () => { setInputValue(''); if (onClear) onClear(); };
   return (
     <div className="search-bar-container">
-      <input type="text" placeholder="세탁기 거름망 청소하는 법" value={inputValue} onChange={handleChange} onKeyPress={handleKeyPress} />
+      <input type="text" placeholder="Search here" value={inputValue} onChange={handleChange} onKeyPress={handleKeyPress} />
       {inputValue && <button onClick={handleClear}>X</button>}
     </div>
   );
