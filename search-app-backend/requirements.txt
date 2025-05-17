@@ -1,0 +1,11 @@
+Flask>=2.0
+Flask-CORS>=3.0 # For handling Cross-Origin Resource Sharing
+google-auth>=2.0
+google-auth-httplib2>=0.1.0 
+requests>=2.25
+python-dotenv>=0.19 # For loading .env file
+google-cloud-storage>=2.0 # For generating GCS signed URLs
+# google-api-python-client is not strictly needed if only using google-auth for token and requests for HTTP
+# but often included in Google Cloud Python projects.
+# If using googleapiclient.discovery.build() in future, uncomment:
+# google-api-python-client>=2.0

@@ -1,0 +1,561 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+  background-color: #f0f2f5;
+  color: #333;
+}
+
+.App {
+  max-width: 1000px; /* Increased by 200px */
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  min-height: 100vh;
+}
+
+.App-header {
+  margin-bottom: 20px;
+}
+
+.search-bar-container {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 24px;
+  padding: 8px 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.search-bar-container input {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  margin-left: 8px; /* Space for a potential search icon */
+}
+
+.search-bar-container button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #888;
+}
+
+
+.streaming-response-container {
+  background-color: #f7f8fa; /* Light grey background as in image */
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  min-height: 100px; /* Ensure some height even when empty */
+  overflow: hidden; /* Added to contain overflowing children */
+  position: relative; /* For absolute positioning of the button */
+}
+
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.loading-indicator .sparkle-icon {
+  font-size: 24px; /* Placeholder, replace with actual icon if available */
+  color: #6c63ff; /* A purple-ish color */
+  margin-bottom: 8px;
+}
+
+.loading-indicator p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 16px;
+}
+
+/* Styles for the new loading indicator */
+.geni-ai-icon {
+  width: 30px; /* Size of the icon */
+  height: 30px;
+  position: relative;
+  display: inline-block;
+  animation: spin 2s linear infinite; /* Keep the spin */
+  /* Remove font-size and color as we are drawing the shape */
+  margin-bottom: 5px; /* Adjust spacing if needed */
+}
+
+.geni-ai-icon::before,
+.geni-ai-icon::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, #89f7fe, #66a6ff, #8000ff, #ff00ff, #ff3399, #ff6666); /* Blue/Purple/Pink gradient */
+  border-radius: 20%; /* This will make the points softer/rounded */
+  filter: blur(1px); /* Slight blur for a softer look */
+}
+
+.geni-ai-icon::before {
+  /* transform: rotate(0deg); // One part of the star */
+  /* No rotation needed for the base element if it's already star-like with border-radius */
+}
+
+.geni-ai-icon::after {
+  transform: rotate(45deg); /* Second part of the star, rotated */
+  /* A more complex shape might use more pseudo-elements or clip-path */
+}
+
+/* A simpler way to make a 4-point star is often with a single element and two pseudo-elements for bars,
+   or by transforming a square. The above uses two overlapping elements for a fuller effect.
+   For a more "classic" 4-point star from two rotated rectangles: */
+/*
+.geni-ai-icon {
+  width: 28px; height: 28px;
+  position: relative;
+  animation: spin 1.5s linear infinite;
+  margin-bottom: 8px;
+}
+.geni-ai-icon::before, .geni-ai-icon::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 40%; // Width of the arms
+  height: 100%; // Length of the arms
+  background: linear-gradient(45deg, #89f7fe, #66a6ff, #8000ff); // Example gradient
+  border-radius: 5px; // Rounded ends for arms
+  transform-origin: center center;
+  transform: translate(-50%, -50%) rotate(0deg);
+  filter: blur(0.5px);
+}
+.geni-ai-icon::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+*/
+/* The first ::before, ::after attempt is closer to the soft, full star in the image */
+
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.new-progress-bar-animated {
+  width: 100%;
+  padding: 5px 0;
+}
+
+.new-progress-bar-animated div {
+  height: 10px; /* Slightly thicker bars */
+  border-radius: 5px;
+  margin-bottom: 10px;
+  background-image: linear-gradient(
+    90deg, 
+    #d1c4e9, /* Light Purple */
+    #e1bee7, /* Light Pinkish Purple */
+    #ede7f6, /* Very Light Purple / Almost White */
+    #e1bee7, /* Light Pinkish Purple */
+    #d1c4e9  /* Light Purple */
+  );
+  background-size: 300% 100%; /* Make gradient wider than bar for movement */
+  animation: shimmer 2.5s infinite linear;
+}
+
+.new-progress-bar-animated div:nth-child(1) {
+  width: 75%;
+}
+.new-progress-bar-animated div:nth-child(2) {
+  width: 90%;
+  animation-delay: 0.15s; /* Stagger animation */
+}
+.new-progress-bar-animated div:nth-child(3) {
+  width: 65%;
+  animation-delay: 0.3s; /* Stagger animation */
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 150% 0; /* Start with gradient shifted right */
+  }
+  100% {
+    background-position: -150% 0; /* Move gradient to the left */
+  }
+}
+
+/* The @keyframes pulse and its comment block have been removed. */
+
+.response-content {
+  font-size: 16px;
+  line-height: 1.6;
+  white-space: pre-wrap; /* To respect newlines in streamed content */
+  position: relative; /* For positioning the fade-out and button */
+  padding-bottom: 55px; /* Added padding to make space for the button */
+}
+
+.truncated-response {
+  overflow: hidden;
+  position: relative; /* Needed for the pseudo-element fade */
+  padding-bottom: 70px; /* Make space for the absolutely positioned button */
+}
+
+.truncated-response::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px; /* Increased height of the fade effect */
+  background: linear-gradient(to bottom, transparent, #f7f8fa 90%); /* Fade to container background */
+  pointer-events: none; /* Allows clicks to pass through to text if any part is clickable */
+  backdrop-filter: blur(5px); /* Increased blur radius */
+}
+
+.show-more-less-button {
+  position: absolute;
+  bottom: 20px; /* Adjust as needed from bottom of streaming-response-container */
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  border: 3px solid #8ab4f8; /* Increased border width by 2px */
+  border-radius: 20px; /* More rounded corners */
+  background-color: #ffffff; /* White background */
+  color: #1a73e8; /* Blue text */
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700; /* Changed to bold */
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 216px; /* Increased width by approx 100px */
+  z-index: 10; /* Ensure it's above text and ::after pseudo-element */
+  /* margin: 15px auto 5px; /* Removed due to absolute positioning */
+  /* margin-top: 30px; /* Removed as it's not the correct fix here */
+}
+
+.show-more-less-button:hover {
+  background-color: #f8f9fa; /* Very light grey on hover */
+}
+
+.chevron {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-style: solid;
+  border-width: 0 2px 2px 0; /* Creates the chevron shape */
+  margin-left: 8px;
+  transition: transform 0.2s ease;
+}
+
+.chevron.down {
+  transform: rotate(45deg); /* Downward chevron */
+}
+
+.chevron.up {
+  transform: rotate(-135deg); /* Upward chevron */
+}
+
+.search-results-container {
+  /* No specific container styling from image, defaults to flow */
+}
+
+.search-result-item {
+  background-color: #fff; /* White background for each item */
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 4px; /* Slightly rounded corners */
+  /* No border in the image, relying on spacing and background */
+}
+
+.search-result-item a {
+  font-size: 12px;
+  color: #5f6368; /* Grey color for the link */
+  text-decoration: none;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.search-result-item a:hover {
+  text-decoration: underline;
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.pdf-icon {
+  background-color: #fa5252; /* Red background for PDF icon */
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.pptx-icon {
+  background-color: #ff9f1c; /* Orange background for PPTX icon */
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.search-result-item h3 {
+  font-size: 18px;
+  color: #1a0dab; /* Blueish color for title, common in search results */
+  margin: 0;
+  flex-grow: 1; /* Allow title to take available space */
+}
+
+.preview-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px; /* Adjust as needed for eye icon */
+  color: #5f6368; /* Grey icon color */
+  padding: 0;
+  margin-left: 8px;
+}
+
+.segment {
+  font-size: 14px;
+  color: #3c4043; /* Dark grey for segment text */
+  line-height: 1.5;
+  margin-bottom: 4px;
+}
+
+.page-number {
+  font-size: 12px;
+  color: #5f6368; /* Grey for page number */
+}
+
+.pdf-preview-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: flex-end; /* Align to the right */
+  align-items: center;
+  z-index: 1000;
+}
+
+.pdf-preview-content {
+  background-color: white;
+  width: 40%; /* Adjust width as needed */
+  height: 90%; /* Adjust height as needed */
+  max-width: 600px;
+  border-radius: 8px 0 0 8px; /* Rounded corners on the left side */
+  box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+  padding: 20px;
+  position: relative; /* For absolute positioning of close button */
+  display: flex;
+  flex-direction: column;
+}
+
+.pdf-preview-content .close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #eee;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pdf-preview-content iframe {
+  flex-grow: 1; /* Iframe takes remaining space */
+  border: 1px solid #ccc; /* Optional border for the iframe */
+  margin-top: 20px; /* Space from the close button */
+}
+
+/* Styles for Inline Citations */
+.citation-icon {
+  display: inline-block;
+  margin-left: 4px;
+  /* margin-right: 4px; */
+  padding: 2px 4px;
+  background-color: #e8f0fe; /* Light blue background */
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px; /* Smaller font for the icon if it's text-based */
+  color: #1a73e8; /* Blue color for the icon */
+  line-height: 1;
+  vertical-align: super; /* Align with superscript, or adjust as needed */
+}
+
+.citation-icon:hover {
+  background-color: #d2e3fc;
+}
+
+/* Styles for react-slick citation references carousel */
+.citation-references-container {
+  margin-top: 20px;
+  padding: 0 20px; /* Add some padding if arrows are outside, or adjust arrow position */
+  position: relative; /* For positioning custom arrows if needed */
+  margin-bottom: 35px; /* Increased space below the carousel (accounting for dots) */
+}
+
+.citation-reference-card {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 15px;
+  width: 280px; /* Fixed width for each card - changed to 280px */
+  max-width: 90vw; /* Ensure it's responsive on small screens */
+  box-sizing: border-box;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  font-size: 13px;
+  line-height: 1.5;
+  display: flex !important; /* Important to override slick's inline-block if needed for flex */
+  flex-direction: column;
+  height: 180px; /* Fixed height */
+  /* min-height: 180px; /* REMOVED as height is now fixed */
+  /* margin: 0 auto; /* Center card if slide is wider than 400px - REMOVED */
+}
+
+/* react-slick will create .slick-slide elements that wrap each card.
+   If slides need to be centered because the track is wider than 400px * slidesToShow:
+.slick-slide > div {
+  display: flex;
+  justify-content: center;
+}
+*/
+
+/* Basic styling for react-slick arrows */
+.citation-references-container .slick-prev,
+.citation-references-container .slick-next {
+  z-index: 10; /* Ensure arrows are above card content */
+  width: 30px;
+  height: 30px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.citation-references-container .slick-prev:before,
+.citation-references-container .slick-next:before {
+  font-family: 'slick'; /* Default slick font for arrows */
+  font-size: 20px;
+  color: #333; /* Darker arrow color */
+  opacity: 0.85;
+}
+.citation-references-container .slick-prev {
+  left: -15px; /* Adjust position if padding on container is 0 */
+}
+.citation-references-container .slick-next {
+  right: -15px; /* Adjust position */
+}
+
+.citation-references-container .slick-prev:hover,
+.citation-references-container .slick-next:hover,
+.citation-references-container .slick-prev:focus,
+.citation-references-container .slick-next:focus {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.citation-references-container .slick-arrow.slick-disabled {
+  display: none !important;
+}
+
+
+/* Customizing react-slick dots */
+.citation-references-container .slick-dots {
+  bottom: -25px; /* Moved dots further down from cards */
+}
+.citation-references-container .slick-dots li button:before {
+  font-size: 10px;
+  color: #6c63ff; 
+  opacity: 0.5;
+}
+.citation-references-container .slick-dots li.slick-active button:before {
+  color: #6c63ff;
+  opacity: 1;
+}
+
+/* For 10px horizontal spacing between cards in the carousel */
+.citation-references-container .slick-list {
+  margin: 0 -5px; /* Compensate for slide margins */
+}
+.citation-references-container .slick-slide {
+  margin: 0 5px; /* Create 5px margin on each side of a slide */
+}
+
+/* The @media query for card width is handled by card's max-width and slider's responsiveness in JS if any */
+
+.citation-reference-card .card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px; /* Increased margin */
+}
+
+.citation-reference-card .pdf-icon {
+  /* Using existing .pdf-icon styles, ensure it's suitable or override here */
+  margin-right: 8px;
+  flex-shrink: 0; /* Prevent icon from shrinking */
+}
+
+.citation-reference-card .card-link {
+  font-size: 12px;
+  color: #5f6368;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow: 1; /* Allow link to take available space */
+}
+
+.citation-reference-card .card-link:hover {
+  text-decoration: underline;
+}
+
+.citation-reference-card .card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #202124; /* Darker title color */
+  margin: 0 0 8px 0;
+  /* No text-overflow handling for title, assuming it's usually short enough */
+}
+
+.citation-reference-card .card-snippet {
+  font-size: 13px;
+  color: #5f6368; /* Consistent with link color for snippet text */
+  margin: 0;
+  /* CSS multi-line truncation can be enabled here if needed.
+     Example:
+     display: -webkit-box; 
+     -webkit-line-clamp: 3; 
+     -webkit-box-orient: vertical;
+     overflow: hidden;
+     text-overflow: ellipsis; 
+     max-height: calc(1.5 * 13px * 3);
+  */
+}
+
+/* Old styles for .citation-references-display and .citation-reference-item are
+   effectively replaced by .citation-references-container and .citation-reference-card.
+   If .citation-references-display is still used for the "No detailed references" message,
+   it might need separate, simpler styling or use .citation-references-container.
+   The JS was changed to use .citation-references-container for the "no results" case too.
+*/
+/* Removing old styles that are fully superseded */
+/*
+.citation-references-display h4 { ... }
+.citation-reference-item { ... }
+.citation-reference-item:last-child { ... }
+.citation-reference-item p { ... }
+.citation-reference-item p strong { ... }
+*/
